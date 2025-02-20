@@ -1,0 +1,35 @@
+# Stage 1: Build the Vite Application
+FROM node:18-slim AS builder
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY . .
+
+# Build the Vite app
+RUN npm run build
+
+# 🚀 Stage 2: Serve the Built App Using Node.js
+FROM node:18-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Install a lightweight static file server (serve)
+RUN npm install -g serve
+
+# Copy built files from the builder stage
+COPY --from=builder /app/dist ./dist
+
+# Expose the application port
+EXPOSE 3000
+
+# Start the server to serve the static files
+CMD ["serve", "-s", "dist", "-l", "3000"]
