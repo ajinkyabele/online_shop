@@ -1,200 +1,285 @@
-# Online Shop 🛍️ for Hackathon Phase 1
-[![Stars](https://img.shields.io/github/stars/iemafzalhassan/online_shop)](https://github.com/iemafzalhassan/online_shop)
-![Forks](https://img.shields.io/github/forks/iemafzalhassan/online_shop)
-![GitHub last commit](https://img.shields.io/github/last-commit/iemafzalhassan/easyshop?color=red)
-[![GitHub Profile](https://img.shields.io/badge/GitHub-iemafzalhassan-blue?logo=github&style=flat)](https://github.com/iemafzalhassan)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-<p align="center">
+# Online Shop – Hackathon Phase 1 Submission
 
-Welcome to the **Online Shop** project – our hackathon entry for Phase 1! This repository contains a fully functional e-commerce application built to demonstrate foundational DevOps skills in three key areas:
-- **Git & GitHub**
-- **Linux**
-- **Docker**
+📌 Overview
 
-In this phase, your focus is on understanding the provided developer code, reviewing how these core topics are implemented, and making any necessary enhancements. When you're ready, you'll submit your work via our designated Google Form.
+This project contains a Vite-based e-commerce application that runs inside a Docker container. It follows security best practices, ensuring a lightweight, optimized, and secure deployment.
 
----
+## Task Descriptions & Implementations of Docker Container:
 
-## Important Dates
+I have made four docker images with four differnet differnt docker files with sucessfull implementation of the ecommerce aplication also .The four Dockerfiles and their functionality are as follows
 
-- **Hackathon Start Date:** 20th Feb, 9:00 AM
-- **Hackathon End Date:** 21st Feb, 9:00 AM
-- **Submission Deadline:** 24 hours after the repository link is shared
+Dockerfile Overview
 
----
+1. Basic Development Dockerfile
+This Dockerfile is a simple setup for a development environment.
 
-## Table of Contents
-- [Important Dates](#important-dates)
-- [Overview](#overview)
-- [Guidelines & Resources](#guidelines--resources)
-- [Tasks](#tasks)
-- [Submission Instructions](#submission-instructions)
-- [Submission Details for Your Repo README](#submission-details-for-your-repo-readme)
-- [Evaluation Criteria](#evaluation-criteria)
-- [License](#license)
-- [Contact](#contact)
+Steps:
+
+• Sets the working directory to /app
+
+• Copies package.json and installs dependencies
+
+• Copies the application code
+
+• Exposes port 3000
+
+• Runs the application in development mode with:
+```
+CMD ["npm", "run", "dev"]
+```
+
+Use Case: Suitable for local development where hot-reloading is required.
+
+2. Multi-Stage Build for Production
+
+This Dockerfile improves the setup by implementing a multi-stage build for better performance and security.
+
+Stage 1: Build the Application
+
+• Installs dependencies
+
+• Copies application code
+
+• Builds the Vite application using:
+```
+RUN npm run build
+```
+Stage 2: Serve Static Files
+
+• Uses a minimal Node.js base image
+
+• Installs a static file server (serve)
+
+• Copies built files (dist/)
+
+• Starts a static file server on port 3000 using:
+```
+CMD ["serve", "-s", "dist", "-l", "3000"]
+```
+
+Use Case: This setup is optimized for production by serving static files instead of running the app in development mode.
+
+3. Secure & Minimal Production Dockerfile
+
+This Dockerfile is optimized for security and performance.
+
+Key Enhancements:
+
+• Uses a non-root user (appuser) for better security.
+
+• Copies only necessary dependencies for the final stage.
+
+• Ensures correct permissions to avoid permission-related issues.
+
+• Uses npx vite preview instead of serve for serving the application.
+
+Use Case: Best suited for secure deployments where non-root execution is required.
+
+Best Practices Implemented:
+
+• Multi-stage builds reduce the final image size.
+
+• Non-root user enhances security.
+
+• Separation of build and runtime stages ensures a clean and optimized container.
+
+• Using npm run build ensures that only the final built application is deployed.
 
 
+## Docker images which i have made and pushes to dockerhub
 
----
 
-## Overview
+```
+ajinkya111/online-app
+```
+```
+ajinkya111/online-app-slim 
+```
+```
+ajinkya111/online-app-multistage
+```
+```
+ajinkya111/online-app-multistage-security
+```
+## All The commands Whichever used for this Hackathon
 
-The **Online Shop** project is a demo e-commerce application designed for Hackathon Phase 1. It serves as a platform to showcase best practices in code quality, development workflows, and system design with a focus on:
+1) Docker
 
-- **Git & GitHub:** Effective version control, branching strategies, and collaborative workflows.
-- **Linux:** Command-line operations, system administration, and file management.
-- **Docker:** Principles of containerization and preparing code for deployment in a containerized environment.
+Containerization Principles
 
-Your task is to familiarize yourself with the code, make enhancements if necessary, and ensure your final submission reflects your understanding of these topics.
+• Consider how to package and deploy the application using Docker.
 
----
+• Create a Dockerfile and optimize it for best practices.
 
-## Guidelines & Resources
+• Example Dockerfile snippet:
+```
+FROM node:18-slim
+• WORKDIR /app
+• COPY package*.json ./
+• RUN npm install
+• COPY . .
+• EXPOSE 3000
+• CMD ["npm", "run", "dev"]
+```
+• Build a Docker image:
+```
+docker build -t my-app .
+```
+• Run a container:
+```
+docker run -d -p 3000:3000 my-app
+```
+• List running containers:
+```
+docker ps
+```
+• Stop a running container:
+```
+docker stop container_id
+```
+• Remove a container:
+```
+docker rm container_id
+```
+• Remove an image:
+```
+docker rmi image_id
+```
 
-Before diving into the tasks, please review the following key resources:
+2) Git & GitHub
 
-- [CONTRIBUTING.md](CONTRIBUTING.md): Guidelines for code contributions, commit messages, and overall coding standards.
-- [ROADMAP.md](ROADMAP.md): Insights into the project vision, future enhancements, and milestones.
-- **Repository Documentation:** Explore the repository to understand how the application is built. Pay special attention to the `src` directory where the main application logic resides, as well as configuration files such as `vite.config.js` and styling in `index.css`.
+Repository Management
 
-These documents provide the context needed to understand the project requirements and the best practices expected for your contributions.
+• Fork and clone the repository.
+```bash
+ git clone <https://github.com/iemafzalhassan/online_shop.git>
+```
+• Create a new branch for your work using:
+```bash
+git checkout -b feature-branch
+```
+• Ensure your commit history is clean and well-documented by making meaningful commits:
+```bash
+git commit -m "Add meaningful feature"
+```
+• Check the status of your repository:
+```bash
+git status
+```
+• Add changes to staging:
+```bash
+git add .
+```
+• Push changes to your branch:
+```bash
+git push origin feature-branch
+```
+• Merge the branch after approval:
+```bash
+git merge feature-branch
+```
+• Pull the latest changes from the main branch:
+```bash
+git pull origin main
+```
 
----
+Collaboration Practices
 
-## Tasks
+• Follow best practices for version control:
 
-For this hackathon phase, your work will center around the following tasks:
+◦ Make descriptive commits.
 
-### Git & GitHub
+◦ Create pull requests.
 
-- **Repository Management:** Fork and clone the repository, then create a new branch for your work. Ensure your commit history is clean and well-documented.
-- **Collaboration Practices:** Follow best practices for version control by making descriptive commits, creating pull requests, and engaging in code reviews.
-- **Workflow Optimization:** Identify any areas where the Git workflow can be improved and document your suggestions for future enhancements.
+◦ Engage in code reviews.
 
-### Linux
+• Reset a commit:
+```bash
+git reset --hard HEAD~1
+```
+• Stash changes temporarily:
+```bash
+git stash
+```
 
-- **Command Line Proficiency:** Review the code for examples of Linux command usage. Test and verify that file operations, system scripts, and environment configurations are functioning as expected.
-- **System Administration:** Examine how the application handles Linux-based operations such as permissions, file management, and process monitoring. If you see room for improvement, implement those changes and document them.
-- **Documentation:** Clearly document any Linux-related enhancements you make, explaining how they optimize the project’s performance or usability.
+• Apply stashed changes:
+```
+git stash pop
+```
+Workflow Optimization
 
-### Docker
+• Identify areas for improvement in the Git workflow.
 
-- **Containerization Principles:** Even though a Dockerfile is not provided in this repository, consider how you would package and deploy this application using Docker. Reflect on the design decisions that would facilitate containerization.
-- **Conceptual Improvements:** Propose any modifications or improvements that could make future Docker integration smoother. Document your suggestions clearly in your pull request.
-- **Code Readiness:** Ensure the codebase is structured in a way that aligns with Docker best practices, preparing it for eventual containerized deployment on AWS EC2 / Azure VM / Google Compute Engine (Your Choice of Cloud).
+• Document suggestions for workflow enhancements in the repository.
 
----
-> [!IMPORTANT]
-> ## Submission Instructions
-> 
-> When you have completed your work, please follow these steps for submission:
->
-> 1. **Review & Test Your Work:**
->    
->    - Make sure all changes are committed and pushed to your GitHub repository (or branch). Test the application thoroughly to confirm that your enhancements do not break existing functionality.
->    
-> 2. **Prepare Your Submission:**
->    
->    -  Gather your full name, email address, and the URL to your GitHub repository (or the specific branch/commit that contains your work).
->    -  Make sure to add Demo video(which should be publically accessible) explaining your implementations for the project. This is the important aspect for evaluation. The Videos / Articles / Submissions should be submitted to the google form as well as shared on your LinkedIn/ twitter for extra points.
->    
-> 3. **Submit via Google Form:**
->    
->    - Complete the submission form here:
->    
->    [Submit Your Work](https://docs.google.com/forms/d/e/1FAIpQLSdtOttzC9M__5ysJ_prVT1MtmV0qh1_PXrI5aYfd3zQNCF-CA/viewform?usp=header)
->    
-> 4. **Timely Submission:**
->    
->    - Ensure that your submission is completed before the hackathon deadline. Late submissions will not be eligible for prizes.
->    
+3)Linux
 
----
+Command Line Proficiency
 
-## Submission Details for Your Repo README
+• Review code for Linux command usage.
 
-When submitting your repository link, your README must include:
+• Verify that file operations, system scripts, and environment configurations are functioning correctly.
 
-- **Project Title & Overview:**
+• Test with:
+```
+chmod +x script.sh
+• ./script.sh
+```
+• List all files in a directory:
+```
+ls -la
+```
+• Check current directory:
+```
+pwd
+```
+• Create a new directory:
+```
+mkdir new_folder
+```
+• Move files:
+```
+mv file.txt /destination/
+```
+• Delete a file:
+```
+rm file.txt
+```
+• Display running processes:
+```
+ps aux
+```
+• Monitor system resource usage:
+```
+top
+```
+System Administration
+
+• Examine Linux-based operations such as:
+
+◦ Permissions
+
+◦ File management
+
+◦ Process monitoring
+
+• Improve efficiency and document implemented changes.
+
+Documentation
+
+• Clearly document any Linux-related enhancements.
+
+• Explain optimizations and their impact on
+ performance or usability.
+
     
-    Clearly state the project name (e.g., "Online Shop – Hackathon Phase 1 Submission") and provide a brief overview of your solution, emphasizing how it addresses Git & GitHub, Linux, and Docker.
-    
-- **Task Descriptions & Implementations:**
-    
-  -  Describe the tasks you worked on. Detail how you managed your repository, the Linux commands or scripts you used, and any improvements or suggestions regarding Docker integration.
-
-> [!NOTE]
->
->  -  Provide video demo link (3-5 minutes only, not more than 5 minutes)
-
-- **Key Changes & Enhancements:**
-    
-    Highlight the major changes or enhancements you made, including any refactoring, feature additions, or optimizations, along with documentation updates.
-    
-- **Final Submission Statement:**
-    
-    Include a clear declaration that this repository (or branch) represents your final submission for Hackathon Phase 1.
-    
-- **Version or Branch Information:**
-    
-    Specify which branch or commit should be reviewed (e.g., "Final submission branch: `final-phase1`").
-    
-
-Make sure this information is visible in your repository's README so that evaluators can easily review your work.
-
----
-
-## Evaluation Criteria
-
-Submissions will be evaluated based on the following criteria:
-
-- **Adherence to Guidelines:**
-    
-    Your work should comply with the project’s coding standards, documentation, and contribution guidelines as described in this README and the [CONTRIBUTING.md](http://contributing.md/) file.
-    
-- **Git & GitHub Proficiency:**
-    
-    Evaluation of your version control practices, including branching strategy, commit quality, and pull request process.
-    
-- **Linux Competence:**
-    
-    Demonstrated ability to effectively use Linux for system administration tasks, scripting, and command-line operations within the project.
-    
-- **Docker Readiness:**
-    
-    Although a Dockerfile is not provided, your documentation and code structure should reflect an understanding of containerization best practices and readiness for future Docker integration.
-    
-- **Quality of Enhancements:**
-    
-    The significance and quality of your improvements, refactoring, and overall impact on the project’s functionality.
-    
-- **Documentation & Clarity:**
-    
-    Clear and concise documentation that explains your work, including details in your repository README about your tasks and changes.
-    
-- **Timeliness:**
-    
-    Your submission must be completed and submitted before the hackathon deadline.
-    
-
----
-
 ## License
 
-This project is licensed under the MIT License. See the [MIT](LICENSE) file for details.
+This project is licensed under the MIT License.
 
----
 
-## Contact
+## Authors
 
-For any questions or further information, please contact:
+Developed by [Ajinkya Bele] - Feel free to contribute! 🚀
 
-- **Email:** [iemafzalhassan@gmail.com](mailto:iemafzalhassan@gmail.com) , [amitabhdevops2024@gmail.com](mailto:iemafzalhassan@gmail.com) , [deveshagent@gmail.com](mailto:deveshagent@gmail.com)
-- [Join Discord Server](https://discord.gg/4JtuMhMcjn)
-
----
-
-Good luck for the hackathon
-
-Happy Learning :)
+This README explains everything clearly! Let me know if you want any modifications. 🚀
